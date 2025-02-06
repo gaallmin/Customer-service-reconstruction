@@ -3,50 +3,57 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>안크 앱 복원</title>
- 
-  <link rel="stylesheet" href="/static/style.css" />
+  <title>The Ankh Survey</title>
+  <!-- 반응형 & 사용자 맞춤 CSS -->
+  <link rel="stylesheet" href="static/style.css" />
 </head>
 <body>
 
   <!-- 네비게이션 바 -->
   <nav class="navbar">
-    <div class="navbar-brand">안크 앱 복원</div>
+    <div class="navbar-brand">The Ankh Survey</div>
+    <!-- 모바일/태블릿에서 햄버거 토글 -->
+    <button class="navbar-toggler" aria-label="Toggle Menu">≡</button>
     <ul class="navbar-nav">
+      <li class="nav-item"><a class="nav-link" href="#home">홈</a></li>
+      <li class="nav-item"><a class="nav-link" href="#programs">프로그램</a></li>
+      <li class="nav-item"><a class="nav-link" href="#about">소개</a></li>
       <li class="nav-item">
-        <a class="nav-link" href="#home">홈</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#programs">프로그램</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#about">소개</a>
+        <a class="nav-link" href="https://www.theankh.biz/" target="_blank">
+          The Ankh 홈페이지
+        </a>
       </li>
     </ul>
   </nav>
 
-  <!-- 메인 헤더/히어로 섹션 -->
-  <header class="container mt-4 mb-4 text-center">
+  <!-- 사용자 맞춤(큰 글씨 모드) 토글 버튼 (옵션) -->
+  <div class="container mt-4">
+    <button class="font-toggle">큰 글씨 모드 켜기/끄기</button>
+  </div>
+
+  <!-- 메인 헤더 섹션 -->
+  <header class="container mt-4 mb-4">
     <h1>복원과 치유의 여정에 오신 것을 환영합니다</h1>
     <p class="mb-3">
-      안크(Ankh)가 마음, 몸 그리고 영혼을 새롭게 하는 여정에 어떻게 기여할 수 있는지 알아보세요.
+      앙크(Ankh)가 마음, 몸 그리고 영혼을 새롭게 하는 여정에 어떻게 기여할 수 있는지 알아보세요.<br>
       아래의 설문을 통해 <strong>예약 시스템</strong>에 대한 의견과 
-      <strong>건강 문제</strong>, 그리고 안크가 어떻게 <strong>발전과 치유에</strong> 도움을 주는지 
-      공유해 주세요.
+      <strong>건강 문제</strong>, 그리고 앙크가 어떻게 <strong>발전과 치유에</strong> 
+      도움을 주는지 공유해 주세요.
     </p>
   </header>
 
-  <!-- 메인 콘텐츠: 설문/입력 폼 -->
+  <!-- 폼 섹션 (단일 컬럼 -> 큰 화면에서 2컬럼) -->
   <main class="container">
     <section class="row mb-5">
       <div class="col col-6-md">
         <h2>경험을 공유해주세요</h2>
-        <form>
+        <form action="/" method="POST">
           <!-- 1. 예약 시스템에 대한 의견 -->
           <div class="form-group mb-3">
             <label for="reservationOpinion">예약 시스템에 대한 의견</label>
             <textarea 
-              id="reservationOpinion" 
+              id="reservationOpinion"
+              name="reservation_opinion"
               placeholder="예약 절차나 사용성 등에 대한 의견을 들려주세요."
             ></textarea>
           </div>
@@ -55,16 +62,18 @@
           <div class="form-group mb-3">
             <label for="healthIssue">현재 겪고 있는 건강 문제</label>
             <textarea 
-              id="healthIssue" 
+              id="healthIssue"
+              name="health_issues" 
               placeholder="신체적, 정신적 혹은 정서적 어려움에 대해 적어주세요."
             ></textarea>
           </div>
 
           <!-- 3. 안크가 주는 도움(발전/치유) -->
           <div class="form-group mb-3">
-            <label for="ankhProgression">안크가 발전과 치유에 어떻게 도움이 되나요?</label>
+            <label for="ankhProgression">앙크가 발전과 치유에 어떻게 도움이 되나요?</label>
             <textarea 
-              id="ankhProgression" 
+              id="ankhProgression"
+              name="ankh_help"  
               placeholder="안크(Ankh) 또는 관련 프로그램을 통해 어떤 변화를 경험하고 있는지 작성해주세요."
             ></textarea>
           </div>
@@ -74,12 +83,53 @@
         </form>
       </div>
     </section>
+
+    <hr class="section-divider" />
+
+    <!-- The Ankh 웹사이트 미리보기 섹션 -->
+    <section class="row mb-5">
+      <div class="col">
+        <h2>웹사이트를 방문하시면 추가적인 정보를 얻으실 수 있습니다.</h2> 
+        <!-- IFRAME PREVIEW -->
+        <iframe 
+          src="https://www.theankh.biz/projects-3" 
+          style="width: 100%; height: 600px; border: none;; margin-top: 50px;"
+          loading="lazy"
+          title="The Ankh Website Preview"
+        ></iframe>
+        
+        <!-- 사이트가 임베드(IFrame) 보안을 막는 경우에 대한 안내 -->
+        <p class="mb-3" style="margin-top:16px;">
+          만약 화면이 표시되지 않는다면, 
+          <a href="https://www.theankh.biz" >The Ankh</a>
+          로 직접 방문해보세요.
+        </p>
+      </div>
+    </section>
   </main>
 
   <!-- 푸터 -->
-  <footer class="container text-center mt-5 mb-5">
+  <footer class="container mb-5">
     <p>&copy; 2025 안크 앱 복원. 모든 권리 보유.</p>
   </footer>
+
+  <!-- JS: 모바일 메뉴/큰 글씨 모드 토글 -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      // 모바일 메뉴 토글
+      const toggler = document.querySelector(".navbar-toggler");
+      const navMenu = document.querySelector(".navbar-nav");
+      toggler.addEventListener("click", function() {
+        navMenu.classList.toggle("active");
+      });
+
+      // 큰 글씨 모드 토글
+      const fontToggleBtn = document.querySelector(".font-toggle");
+      fontToggleBtn.addEventListener("click", function() {
+        document.body.classList.toggle("user-large-text");
+      });
+    });
+  </script>
 
 </body>
 </html>

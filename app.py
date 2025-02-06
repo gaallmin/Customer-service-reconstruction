@@ -12,15 +12,12 @@ dash_app = create_dash_app(app)
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
-        # (Same code as before to store data)
-        user_id = request.form.get('user_id')
         reservation_opinion = request.form.get('reservation_opinion')
         health_issues = request.form.get('health_issues')
         ankh_help = request.form.get('ankh_help')
 
         db = SessionLocal()
         new_feedback = UserFeedback(
-            user_id=user_id,
             reservation_opinion=reservation_opinion,
             health_issues=health_issues,
             ankh_help=ankh_help

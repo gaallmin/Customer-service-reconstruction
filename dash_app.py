@@ -4,6 +4,14 @@ from dash import dcc, html
 import plotly.express as px
 from models import SessionLocal, UserFeedback
 from collections import Counter
+from util.analysis_utils import predict_sentiment
+
+try:
+    from konlpy.tag import Okt
+    okt = Okt()
+    HAVE_KONLPY = True
+except ImportError:
+    HAVE_KONLPY = False
 
 def create_dash_app(server):
     # Create a Dash app that uses the existing Flask server
@@ -28,11 +36,13 @@ def create_dash_app(server):
         ),
 
         dcc.Graph(id='word-frequency-graph'),
+        dcc.Graph(id='sentiment-graph')
     ])
 
     # Callback to update the graph based on the selected text column
     @dash_app.callback(
-        dash.dependencies.Output('word-frequency-graph', 'figure'),
+        [dash.dependencies.Output('word-frequency-graph', 'figure'),
+        dash.dependencies.Output('sentiment-graph', 'figure')],
         [dash.dependencies.Input('text-source-dropdown', 'value')]
     )
     def update_graph(selected_column):
@@ -57,15 +67,24 @@ def create_dash_app(server):
         words = [item[0] for item in most_common]
         counts = [item[1] for item in most_common]
 
-        fig = px.bar(x=words, y=counts, labels={'x': 'Word', 'y': 'Count'}, title='Top Word Frequencies')
-        return fig
+        word_freq_fig = px.bar(x=words, 
+                     y=counts, 
+                     labels={'x': 'Word', 'y': 'Count'}, 
+                     title='Top Word Frequencies')
+
+        sentiment_results = {'Positive': 0, 'Neutral':0, 'Negative':0 }
+        for txt in texts:
+            label = predict_sentiment(txt)
+            sentiment_results[label] += 1
+        
+        labels = list(sentiment_results.keys())
+        values = list(sentiment_results.values())
+
+        sentiment_fig = px.pie(
+            names=labels,
+            values=values,
+            title='Sentiment Distribution (Transformer-based)'
+        )
+        return word_freq_fig, sentiment_fig
 
     return dash_app
-
-# If you want to run the Dash app standalone, do something like this:
-if __name__ == '__main__':
-    from flask import Flask
-    server = Flask(__name__)
-
-    dash_app = create_dash_app(server)
-    server.run(debug=True, port=8050)
