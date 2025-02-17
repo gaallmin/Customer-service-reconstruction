@@ -4,7 +4,7 @@ from dash import dcc, html
 import plotly.express as px
 from models import SessionLocal, UserFeedback
 from collections import Counter
-from util.analysis_utils import predict_sentiment
+from util.analysis_utils import predict_sentiments
 
 try:
     from konlpy.tag import Okt
@@ -55,34 +55,41 @@ def create_dash_app(server):
         texts = [getattr(f, selected_column) for f in feedbacks if getattr(f, selected_column)]
         combined_text = " ".join(texts)
 
-        # Simple tokenization (for demonstration). 
-        # For Korean text, consider morphological analysis (e.g., KoNLPy).
-        tokens = combined_text.split()
+        if HAVE_KONLPY:
+            tokens=[]
+            for txt in texts:
+                tokens.extend(okt.nouns(txt))
+        else:
+            tokens = combined_text.split()
+
+        stopwords = {"reservation_opinion": {"예약"},
+                     "health_issues": {"있어서", "있어요","있습니다"},
+                     "ankh_help": {"수"}}
+        selected_stopwords = stopwords.get(selected_column, set())
+        filtered_token = [token for token in tokens if token not in selected_stopwords]
 
         # Count frequencies
-        counter = Counter(tokens)
+        counter = Counter(filtered_token)
         most_common = counter.most_common(20)  # top 20 words
 
         # Convert to a DataFrame or list for Plotly
-        words = [item[0] for item in most_common]
-        counts = [item[1] for item in most_common]
+        words = [word for word, count in most_common]
+        counts = [count for word, count in most_common]
 
-        word_freq_fig = px.bar(x=words, 
+        word_freq_fig = px.bar(
+            x=words, 
                      y=counts, 
                      labels={'x': 'Word', 'y': 'Count'}, 
                      title='Top Word Frequencies')
 
-        sentiment_results = {'Positive': 0, 'Neutral':0, 'Negative':0 }
-        for txt in texts:
-            label = predict_sentiment(txt)
-            sentiment_results[label] += 1
-        
-        labels = list(sentiment_results.keys())
-        values = list(sentiment_results.values())
+        sentiment_labels = predict_sentiments(texts)
+        sentiment_counter = Counter(sentiment_labels)
+        sentiment_names = list(sentiment_counter.keys())
+        sentiment_values = list(sentiment_counter.values())
 
         sentiment_fig = px.pie(
-            names=labels,
-            values=values,
+            names=sentiment_names,
+            values=sentiment_values,
             title='Sentiment Distribution (Transformer-based)'
         )
         return word_freq_fig, sentiment_fig
