@@ -11,7 +11,7 @@ class UserFeedback(Base):
     health_issues = Column(Text)
     ankh_help = Column(Text)
 
-DATABASE_URL = "mysql+pymysql://admin:ankh-survey-db.c78y4ugsgy3q.us-east-1.rds.amazonaws.com:3306/ankh"
+DATABASE_URL = "mysql+pymysql://admin:ankh0313@ankh-survey-db.c78y4ugsgy3q.us-east-1.rds.amazonaws.com:3306/ankh"
 
 engine = create_engine(DATABASE_URL, echo=True)
 SessionLocal = sessionmaker(bind=engine)
