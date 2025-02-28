@@ -1,3 +1,4 @@
 .service/
 model.py
 ankh-survey.pem
+.env

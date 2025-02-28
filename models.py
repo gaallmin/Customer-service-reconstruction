@@ -1,7 +1,10 @@
+import os
+from dotenv import load_dotenv
 from sqlalchemy import create_engine, Column, Integer, String, Text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
+load_dotenv()
 Base = declarative_base()
 
 class UserFeedback(Base):
@@ -11,7 +14,7 @@ class UserFeedback(Base):
     health_issues = Column(Text)
     ankh_help = Column(Text)
 
-DATABASE_URL = "mysql+pymysql://admin:ankh0313@ankh-survey-db.c78y4ugsgy3q.us-east-1.rds.amazonaws.com:3306/ankh"
+DATABASE_URL = os.getenv("MYSQL_DB_URL")
 
 engine = create_engine(DATABASE_URL, echo=True)
 SessionLocal = sessionmaker(bind=engine)
