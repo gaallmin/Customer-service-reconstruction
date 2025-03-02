@@ -1,11 +1,15 @@
 import os
-from dotenv import load_dotenv
 from sqlalchemy import create_engine, Column, Integer, String, Text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-load_dotenv()
 Base = declarative_base()
+
+DB_HOST = os.environ.get('RDS_HOSTNAME')
+DB_PORT = os.environ.get('RDS_PORT')
+DB_NAME = os.environ.get('RDS_DB_NAME')
+DB_USER = os.environ.get('RDS_USERNAME')
+DB_PASS = os.environ.get('RDS_PASSWORD')
 
 class UserFeedback(Base):
     __tablename__ = 'ankh_db'
@@ -14,7 +18,7 @@ class UserFeedback(Base):
     health_issues = Column(Text)
     ankh_help = Column(Text)
 
-DATABASE_URL = os.getenv("MYSQL_DB_URL")
+DATABASE_URL = f"mysql+pymysql://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 
 engine = create_engine(DATABASE_URL, echo=True)
 SessionLocal = sessionmaker(bind=engine)
