@@ -6,7 +6,7 @@ from dash_app import create_dash_app
 app = Flask(__name__)
 init_db()
 
-# Attach Dash app to Flask
+# Attach Dash app to Flask (only create once)
 dash_app = create_dash_app(app)
 
 @app.route('/', methods=['GET', 'POST'])

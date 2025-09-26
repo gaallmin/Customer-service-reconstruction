@@ -18,7 +18,7 @@ class UserFeedback(Base):
     health_issues = Column(Text)
     ankh_help = Column(Text)
 
-DATABASE_URL = f"mysql+pymysql://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+DATABASE_URL = f"mysql+pymysql://root:minjegal0408!@localhost:3306/ankh_app_db"
 
 engine = create_engine(DATABASE_URL, echo=True)
 SessionLocal = sessionmaker(bind=engine)
